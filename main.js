@@ -1,7 +1,7 @@
 const {app, BrowserWindow,Menu} = require('electron');
 const path = require('path');
 let mainWindow;
-const isDev = process.env.NODE_ENV !== 'development';
+
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS']=true;
 const isMac = process.platForm === 'darwin';
 
@@ -14,9 +14,7 @@ function createMainWindow () {
     }
     
   });
-  if(isDev){
-    mainWindow.webContents.openDevTools();
-}
+
   mainWindow.loadFile('renderer/index.html');
   mainWindow.on('closed', function () {
     mainWindow = null
