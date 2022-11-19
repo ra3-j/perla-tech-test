@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<head>
+    <title>Video Chat - Perla Tec test</title>
+</head>
+<body>
+    <h1>Video Conference</h1>
+    <h2>Please Enter The Room Name:</h2>
+    <div id="selectedRoom">
+        <label>Room Name:</label>
+        <input id="roomName" type="text" placeholder="Type Room Name"/>
+        <button id="enterRoomBtn">Enter The Room</button>
+    </div>
+
+    <div id="room" style="display:none">
+        <video id="localVideo" autoplay ></video>
+        <video id="remoteVideo" autoplay></video>
+    </div>
+
+    <script src="client.js"></script>
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script src="./client.js"></script>
+</body>
