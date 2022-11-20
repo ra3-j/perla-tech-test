@@ -28,7 +28,7 @@ var socket = io('http://localhost:3000');
 
 //create or join a group
 enterTheRoomBtn.onclick = function () {
-    if (roomNameInput.value === '') {
+    if (!roomNameInput.value) {
         alert("Please Enter The Room Name")
     } else {
         roomName = roomNameInput.value;
@@ -135,13 +135,17 @@ function onAddStream(event) {
 
 //send a message
 sendMessageBtn.onclick = function () {
-    if (textChatField.value === '') {
-        alert("Please Type a Message")
-    } else {
-        sentMessage = textChatField.value;
-        socket.emit('sendMessage', sentMessage,roomName,userName.value);
-        textChatArea.style = "display: block;";
-        textChatArea.value += `Me: ${sentMessage}\n`;
+    if(!userName.value){
+        alert("Please Enter Your Username");
+    }else{
+        if (!textChatField.value) {
+            alert("Please Type a Message")
+        } else {
+            sentMessage = textChatField.value;
+            socket.emit('sendMessage', sentMessage,roomName,userName.value);
+            textChatArea.style = "display: block;";
+            textChatArea.value += `Me: ${sentMessage}\n`;
+        }
     }
 };
 
