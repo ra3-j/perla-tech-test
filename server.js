@@ -6,10 +6,17 @@ var io = require('socket.io')(http);
 const port = process.env.PORT || 3000;
 
 app.use(express.static('public'));
-
+console.log('user connected');
 io.on('connection', function (socket) {
-    console.log('user connected');
-
+    //text chat
+    socket.on('sendMessage',(message,room,userName)=>{
+        if(!room){
+            socket.broadcast.emit('receiveMessage',message,userName);
+        }else{
+            socket.broadcast.to(room).emit('receiveMessage',message,userName);;
+        }
+    })
+    //
     socket.on('create or join', function (room) {
         console.log('create or join to room ', room);
         
@@ -17,10 +24,10 @@ io.on('connection', function (socket) {
         var numClients = myRoom.length;
 
         console.log('Room ', room, ' has ', numClients, ' clients');
-        if (numClients == 0) {
+        if (numClients === 0) {
             socket.join(room);
             socket.emit('created', room);
-        } else if (numClients == 1) {
+        } else if (numClients === 1) {
             socket.join(room);
             socket.emit('joined', room);
         } else {

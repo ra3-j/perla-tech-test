@@ -1,9 +1,16 @@
+var userName = document.getElementById("userName");
+
 var selectRoomDiv = document.getElementById("selectedRoom");
 var consultingRoomDiv = document.getElementById("room");
 var roomNameInput = document.getElementById("roomName");
 var enterTheRoomBtn = document.getElementById("enterRoomBtn");
 var localVideo = document.getElementById("localVideo");
 var remoteVideo = document.getElementById("remoteVideo");
+
+var sendMessageBtn = document.getElementById("sendMessageBtn");
+var textChatField = document.getElementById("textChatField");
+var textChatArea = document.getElementById("textChatArea");
+var sentMessage;
 
 var roomName;
 var localStream;
@@ -125,3 +132,24 @@ function onAddStream(event) {
     remoteVideo.srcObject = event.streams[0];
     remoteStream = event.stream;
 }
+
+//send a message
+sendMessageBtn.onclick = function () {
+    if (textChatField.value === '') {
+        alert("Please Type a Message")
+    } else {
+        sentMessage = textChatField.value;
+        socket.emit('sendMessage', sentMessage,roomName,userName.value);
+        textChatArea.style = "display: block;";
+        textChatArea.value += `Me: ${sentMessage}\n`;
+    }
+};
+
+socket.on('receiveMessage',(message,sender)=>{
+    textChatArea.style = "display: block;";
+    if(sender === userName.value){
+        textChatArea.value += `Me: ${message.toString()}\n`;
+    }else{
+        textChatArea.value += `${sender}: ${message.toString()}\n`;
+    }
+})
